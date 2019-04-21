@@ -21,3 +21,37 @@ Twitter.post('statuses/update', { status: 'test twitter post API!' }, function(e
   });
 
 */
+
+// retweet function from specific user 
+
+var retweet = function () {
+    var params = {
+        Name: 'ahmadssb', 
+        screen_name: 'ahmadssb',  
+        count: 1   //return last tweet
+    }
+    Twitter.get('statuses/user_timeline', params, function (err, data) {
+        if (!err) {
+                console.log(data);
+                console.log("new line");
+                var retweetId = data[0].id_str;
+                Twitter.post('statuses/retweet/:id', {
+                    id: retweetId
+                }, function (err, response) {
+                    if (response) {
+                        console.log('Retweeted!!!');
+                    }
+                    if (err) {
+                          console.log(err);
+                        console.log('Problem when retweeting. Possibly already retweeted this tweet!');
+                    }
+                });
+        }
+        else {
+            console.log('Error during tweet search call');
+        }
+    });
+};
+
+
+retweet();
